@@ -6,7 +6,7 @@
 /*   By: staskine <staskine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 12:42:10 by staskine          #+#    #+#             */
-/*   Updated: 2022/03/01 14:42:19 by staskine         ###   ########.fr       */
+/*   Updated: 2022/03/03 12:26:23 by staskine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	get_result(const int fd, char **string, char **line)
 	{
 		*line = ft_strdup(string[fd]);
 		free(string[fd]);
-		return (0);
+		return (1);
 	}
 	else
 	{
@@ -61,7 +61,7 @@ int	get_next_line(const int fd, char **line)
 		return (-1);
 	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		buf[BUFF_SIZE] = '\0';
+		buf[ret] = '\0';
 		//printf("%s, buf\n", buf);
 		if (string[fd] == NULL)
 		{
