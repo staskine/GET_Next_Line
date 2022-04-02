@@ -6,12 +6,16 @@
 /*   By: staskine <staskine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 12:42:10 by staskine          #+#    #+#             */
-/*   Updated: 2022/03/03 12:26:23 by staskine         ###   ########.fr       */
+/*   Updated: 2022/04/02 12:23:35 by staskine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+/*
+This function receives the string from the previous one and checks whether the
+file has ended or if there is a newline and acts accordingly.
+*/
 static int	get_result(const int fd, char **string, char **line)
 {
 	int		index;
@@ -38,7 +42,9 @@ static int	get_result(const int fd, char **string, char **line)
 		return (1);
 	}
 }
-
+/*
+Checks if read has failed or if the file line is empty
+*/
 static int	check_result(int ret, const int fd, char **string, char **line)
 {
 	if (ret < 0)
@@ -49,6 +55,9 @@ static int	check_result(int ret, const int fd, char **string, char **line)
 		return (get_result(fd, string, line));
 }
 
+/*
+creates or joins the line in the file to our static string
+*/
 static int	strcompile(char **string, char *buf, int fd)
 {
 	char	*temp;
@@ -71,6 +80,10 @@ static int	strcompile(char **string, char *buf, int fd)
 	return (0);
 }
 
+/*
+Reads through the file until reading cannot continue
+or there is a newline.
+*/
 int	get_next_line(const int fd, char **line)
 {
 	static char	*string[FD_SIZE];
@@ -79,6 +92,11 @@ int	get_next_line(const int fd, char **line)
 
 	if (fd < 0 || line == NULL || fd > FD_SIZE)
 		return (-1);
+	if (string[fd])
+	{
+		if (ft_strchr(string[fd], '\n'))
+			return (get_result(fd, string, line));
+	}
 	ret = read(fd, buf, BUFF_SIZE);
 	if (ret < 0)
 		return (-1);
